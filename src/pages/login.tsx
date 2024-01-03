@@ -1,11 +1,16 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { FormError } from '../components/form-error'
-import { gql, useMutation } from '@apollo/client'
+import { ApolloError, gql, useMutation } from '@apollo/client'
+import {
+  LoginMutation,
+  LoginMutationVariables,
+  LoginOutput,
+} from '../gql/graphql'
 
 const LOGIN_MUTATION = gql`
-  mutation PotatoMutation($email: String!, $password: String!) {
-    login(input: { email: $email, password: $password }) {
+  mutation Login($loginInput: LoginInput!) {
+    login(input: $loginInput) {
       ok
       token
       error
@@ -22,25 +27,34 @@ export const Login = () => {
   const {
     register,
     getValues,
+    watch,
     formState: { errors },
     handleSubmit,
   } = useForm<ILoginForm>()
 
   // loading == mutation 실행중,
   // error == mutation이 error 반환
+  // onCompleted는 login이 있다는 것을 의미한다.
 
-  const [loginMutation, { loading, error, data }] = useMutation(LOGIN_MUTATION)
+  const onCompleted = (data: LoginMutation) => {
+    const {
+      login: { error, ok, token },
+    } = data
+    if (ok) {
+      console.log(token)
+    }
+  }
+  // const onError = (error: ApolloError) => {}
+  const [loginMutation, { data: loginMutationResult }] = useMutation<
+    LoginMutation,
+    LoginMutationVariables
+  >(LOGIN_MUTATION, {
+    onCompleted,
+  })
 
   const onSubmit = () => {
-    const { email, password } = getValues()
-    loginMutation({
-      variables: {
-        email,
-        password,
-      },
-    })
+    loginMutation()
   }
-
   return (
     <div className="h-screen flex items-center justify-center bg-gray-800">
       <div className="bg-white w-full max-w-lg pt-10 pb-7  rounded-lg text-center">
@@ -76,6 +90,9 @@ export const Login = () => {
             <FormError errorMessage={errors.password?.message} />
           )}
           <button className="btn mt-3">Log In</button>
+          {loginMutationResult?.login.error && (
+            <FormError errorMessage={loginMutationResult.login.error} />
+          )}
         </form>
       </div>
     </div>
