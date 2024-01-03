@@ -29,3 +29,16 @@ reactive variable
 - react variable의 값이 변경되면 그 필드를 갖는 쿼리들이 자동으로 새로고침된다.
 - Fields값이 reactive variable의 값에 의존한다면 variable 값이 바뀔 때 field를 포함하고 있는
 - active query들이 자동으로 새로고침된다.
+
+apollo-tooling
+
+- back-end에서 mutations, query responses, input type을 전부 다 typescript 정의로 자동으로 생성해준다.
+
+apollo가 하는 일
+
+- apollo는 내 file을 보면서 gql이 나올 때마다 typescript definition을 건네준다.
+- login.tsx의 onError에서 ApolloError는 연결이 안되면 발생한다.
+  - backend에서 request를 받아주지 않아 error false를 받으면 이 에러는 발생하지 않는다
+- output에서 error false는 GraphQL에게는 error가 아니다.
+- output에서 error false는 GraphQl에겐 onCompleted이다.
+- GraphQL에서 error는 request가 유효하지 않거나 인증이 필요하거나 url이 잘못됐을 경우이다.
