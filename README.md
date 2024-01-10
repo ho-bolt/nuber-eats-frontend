@@ -42,7 +42,3 @@ apollo가 하는 일
 - output에서 error false는 GraphQL에게는 error가 아니다.
 - output에서 error false는 GraphQl에겐 onCompleted이다.
 - GraphQL에서 error는 request가 유효하지 않거나 인증이 필요하거나 url이 잘못됐을 경우이다.
-
-# 수정할 거
-
-- 로그인된 후에도 404페이지 뜨게 하기
