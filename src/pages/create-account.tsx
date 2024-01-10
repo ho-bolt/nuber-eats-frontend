@@ -11,8 +11,6 @@ import nuberLogo from '../images/uber-eats-logosvg.svg'
 import { Button } from '../components/button'
 import { Link } from 'react-router-dom'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
-import { get } from 'http'
-import { error } from 'console'
 import { useHistory } from 'react-router-dom'
 export const CREATE_ACCOUNT_MUTATION = gql`
   mutation createAccount($createAccountInput: CreateAccountInput!) {
@@ -59,7 +57,8 @@ export const CreateAccount = () => {
     } = data
     // 계정 생성 완료되면 로그인 페이지로 리다이렉트
     if (ok) {
-      history.push('/login')
+      alert('Account Created! Log In Now!! ')
+      history.push('/')
     }
   }
   const [
@@ -157,7 +156,7 @@ export const CreateAccount = () => {
         </form>
         <div>
           Already have an account?{' '}
-          <Link to="/login" className=" text-black font-bold hover:underline">
+          <Link to="/" className=" text-black font-bold hover:underline">
             Log In Now
           </Link>
         </div>

@@ -7,7 +7,10 @@ import nuberLogo from '../images/uber-eats-logosvg.svg'
 import { Button } from '../components/button'
 import { Link } from 'react-router-dom'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
-import { isLoggedInVar } from '../apollo'
+import { authTokenVar, isLoggedInVar } from '../apollo'
+import { LOCALSTORAGE_TOKEN } from '../constants'
+
+// gql 쿼리
 export const LOGIN_MUTATION = gql`
   mutation login($loginInput: LoginInput!) {
     login(input: $loginInput) {
@@ -17,12 +20,13 @@ export const LOGIN_MUTATION = gql`
     }
   }
 `
-
+// 로그인 interface
 interface ILoginForm {
   email: string
   password: string
 }
 
+//로그인 컴포넌트
 export const Login = () => {
   const {
     register,
@@ -41,7 +45,9 @@ export const Login = () => {
     const {
       login: { ok, token },
     } = data
-    if (ok) {
+    if (ok && token) {
+      localStorage.setItem(LOCALSTORAGE_TOKEN, token)
+      authTokenVar(token)
       isLoggedInVar(true)
     }
   }
