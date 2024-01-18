@@ -63,9 +63,12 @@ export const Restaurants = () => {
           <div className="flex justify-around max-w-screen-md mx-auto">
             {data?.allCategories.categories?.map(
               (category: any, index: number) => (
-                <div className="flex flex-col items-center">
+                <div
+                  key={index}
+                  className="flex flex-col group cursor-pointer items-center "
+                >
                   <div
-                    className="w-16 h-16 rounded-full bg-cover border  hover:bg-gray-100 cursor-pointer"
+                    className="w-16 h-16 rounded-full bg-cover border group-hover:bg-gray-200 "
                     style={{ backgroundImage: `url(${category.coverImage})` }}
                     key={index}
                   ></div>
@@ -75,6 +78,24 @@ export const Restaurants = () => {
                 </div>
               )
             )}
+          </div>
+          <div className="grid mt-10 grid-cols-3 gap-x-5 gap-y-10 ">
+            {data?.restaurants.results?.map((restaurant, index: number) => (
+              <div key={index}>
+                <div
+                  style={{ backgroundImage: `url(${restaurant.coverImage})` }}
+                  key={index}
+                  className="py-28 bg-cover bg-center mb-3"
+                ></div>
+                <h3 className="mt-3 text-xl font-semibold">
+                  {" "}
+                  {restaurant.name}{" "}
+                </h3>
+                <span className="border-t-2 border-gray-200">
+                  {restaurant.category?.name}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       )}
