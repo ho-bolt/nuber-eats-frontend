@@ -104,7 +104,7 @@ export const EditProtile = () => {
   };
   return (
     <div className="mt-52 flex flex-col justify-center items-center">
-      <FormTitle title={"Edit Profile"} />
+      <FormTitle title={"Edit Profile | Nuber Eats"} />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="grid max-w-screen-sm gap-3 mt-5 w-full mb-5"

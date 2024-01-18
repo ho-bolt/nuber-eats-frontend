@@ -8,6 +8,8 @@ import {
 import { useLocation } from "react-router-dom";
 import { useMe } from "../../hooks/useMe";
 import { useHistory } from "react-router-dom";
+import { FormTitle } from "../../components/form-title";
+import { Helmet } from "react-helmet-async";
 
 const VERIFY_EMAIL_MUTATION = gql`
   mutation verifyEmail($input: VerifyEmailInput!) {
@@ -70,6 +72,9 @@ export const ConfirmEmail = () => {
   }, []);
   return (
     <div className="mt-52 flex flex-col items-center justify-center ">
+      <Helmet>
+        <FormTitle title={"Verify Email | Nuber Eats"} />
+      </Helmet>
       <h2 className="text-lg mb-2 font-extrabold">Confirming email....</h2>
       <h4 className="text-gray-600 text-sm">
         Please wait, don't close the page
