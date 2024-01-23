@@ -6,9 +6,10 @@ import { Restaurants } from "../pages/client/restaurants";
 import { NotFound } from "../pages/404";
 import { Header } from "../components/header";
 import { useMe } from "../hooks/useMe";
-import { Redirect } from "react-router-dom";
 import { ConfirmEmail } from "../pages/user/confirm-email";
 import { EditProtile } from "../pages/user/edit-profile";
+import { Search } from "../pages/client/search";
+import { Category } from "../pages/client/category";
 
 const ClientRoutes = () => (
   <>
@@ -20,6 +21,12 @@ const ClientRoutes = () => (
     </Route>
     <Route key={3} path="/edit-profile" exact>
       <EditProtile />
+    </Route>
+    <Route key={4} path="/search" exact>
+      <Search />
+    </Route>
+    <Route key={5} path="/category/:slug">
+      <Category />
     </Route>
   </>
 );

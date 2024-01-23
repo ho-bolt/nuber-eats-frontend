@@ -43,6 +43,12 @@ apollo가 하는 일
 - output에서 error false는 GraphQl에겐 onCompleted이다.
 - GraphQL에서 error는 request가 유효하지 않거나 인증이 필요하거나 url이 잘못됐을 경우이다.
 
+Lazy Query
+
+- 즉시 query가 실행되는 것이 아니라 어떤 조건이 충족되면 실행됨
+- history push 는 새 페이지를 push하고 이전 페이지를 기록에 남긴다.
+- replace는 대체하는 거라 이전페이지 기록을 남기지 않는다.
+
 # 수정할 거
 
 - 로그인된 후에도 404페이지 뜨게 하기
