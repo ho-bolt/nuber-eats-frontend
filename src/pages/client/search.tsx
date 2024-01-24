@@ -17,17 +17,11 @@ const SEARCH_RESTAURANT = gql`
       totalPages
       totalResults
       restaurants {
-        id
-        name
-        coverImage
-        category {
-          name
-        }
-        address
-        isPromoted
+        ...RestaurantParts
       }
     }
   }
+  ${RESTAURANT_FRAGMENT}
 `;
 
 export const Search = () => {
@@ -53,8 +47,6 @@ export const Search = () => {
       },
     });
   }, [history, location]);
-
-  console.log(loading, data, called);
 
   return (
     <h1>

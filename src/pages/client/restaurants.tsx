@@ -10,6 +10,7 @@ import { useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { CATEGORY_FRAGMENT, RESTAURANT_FRAGMENT } from "../../fragments";
+import Page from "../../components/page";
 
 const RESTAURANTS_QUERY = gql`
   query restaurantsPage($input: RestaurantsInput!) {
@@ -51,9 +52,8 @@ export const Restaurants = () => {
       },
     },
   });
-
-  const onNextPageClick = () => setPage((current) => current + 1);
-  const onPrevPageClick = () => setPage((current) => current - 1);
+  const onNextPage = () => setPage((current) => current + 1);
+  const onPrevPage = () => setPage((current) => current - 1);
   const { register, handleSubmit, getValues } = useForm<IFormProps>();
   const history = useHistory();
   const onSearchSubmit = () => {
@@ -67,7 +67,7 @@ export const Restaurants = () => {
   return (
     <div>
       <Helmet>
-        <title>Hoem | Nuber Eats </title>
+        <title>Home | Nuber Eats </title>
       </Helmet>
       <form
         onSubmit={handleSubmit(onSearchSubmit)}
@@ -119,32 +119,12 @@ export const Restaurants = () => {
               )
             )}
           </div>
-          <div className="grid grid-cols-3 text-center max-w-md mx-auto items-center mt-10">
-            {page > 1 ? (
-              <button
-                onClick={onPrevPageClick}
-                className="focus:outline font-medium text-2xl"
-              >
-                &larr;
-              </button>
-            ) : (
-              <div></div>
-            )}
-
-            <span>
-              Page {page} of {data?.restaurants.totalPages}
-            </span>
-            {page !== data?.restaurants.totalPages ? (
-              <button
-                onClick={onNextPageClick}
-                className="focus:outline font-medium text-2xl"
-              >
-                &rarr;
-              </button>
-            ) : (
-              <div></div>
-            )}
-          </div>
+          <Page
+            totalPages={data?.restaurants.totalPages}
+            onNextPage={onNextPage}
+            onPrevPage={onPrevPage}
+            pages={page}
+          />
         </div>
       )}
       <div></div>
