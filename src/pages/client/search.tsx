@@ -8,6 +8,7 @@ import {
   SearchRestaurantQuery,
   SearchRestaurantQueryVariables,
 } from "../../__generated__/graphql";
+import { Restaurant } from "../../components/restaurant";
 
 const SEARCH_RESTAURANT = gql`
   query searchRestaurant($input: SearchRestaurantInput!) {
@@ -32,7 +33,7 @@ export const Search = () => {
     SearchRestaurantQuery,
     SearchRestaurantQueryVariables
   >(SEARCH_RESTAURANT);
-
+  console.log("data", data);
   useEffect(() => {
     const [_, query] = location.search.split("?term=");
     if (!query) {
@@ -49,11 +50,25 @@ export const Search = () => {
   }, [history, location]);
 
   return (
-    <h1>
-      <Helmet>
-        <title>Search | Nuber Eats</title>
-      </Helmet>
-      Search Page
-    </h1>
+    <div>
+      <h1>
+        <Helmet>
+          <title>Search | Nuber Eats</title>
+        </Helmet>
+      </h1>
+      <div className="grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10 mx-auto">
+        {data?.searchRestaurant.restaurants?.map(
+          (restaurant: any, index: number) => (
+            <Restaurant
+              key={index}
+              id={restaurant.id}
+              coverImage={restaurant.coverImage}
+              name={restaurant.name}
+              categoryName={restaurant.category.name}
+            />
+          )
+        )}
+      </div>
+    </div>
   );
 };
