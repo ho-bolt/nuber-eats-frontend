@@ -10,6 +10,7 @@ import { ConfirmEmail } from "../pages/user/confirm-email";
 import { EditProtile } from "../pages/user/edit-profile";
 import { Search } from "../pages/client/search";
 import { Category } from "../pages/client/category";
+import { Restaurant } from "../pages/client/restaurant";
 
 const ClientRoutes = () => (
   <>
@@ -27,6 +28,9 @@ const ClientRoutes = () => (
     </Route>
     <Route key={5} path="/category/:slug">
       <Category />
+    </Route>
+    <Route key={6} path="/restaurant/:id">
+      <Restaurant />
     </Route>
   </>
 );
