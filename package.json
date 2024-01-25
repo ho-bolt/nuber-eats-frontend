@@ -35,10 +35,11 @@
     "tailwind:build": "tailwind build -i ./src/styles/tailwind.css -o ./src/styles/style.css",
     "start": "npm run compile & npm run tailwind:build & react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --verbose",
     "eject": "react-scripts eject",
     "compile": "rimraf src/__generated__ &&  graphql-codegen",
-    "watch": "graphql-codegen -w"
+    "watch": "graphql-codegen -w",
+    "test:cov": "npm test -- --coverage --watchAll=false"
   },
   "eslintConfig": {
     "extends": [
@@ -84,5 +85,12 @@
     "@apollographql/graphql-language-service-utils": {
       "graphql": "$graphql"
     }
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "./src/components/**/*.tsx",
+      "./src/pages/**/*.tsx",
+      "/src/router/**/*.tsx"
+    ]
   }
 }

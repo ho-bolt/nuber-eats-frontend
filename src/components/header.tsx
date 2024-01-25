@@ -14,7 +14,6 @@ export const Header: React.FC = () => {
     <>
       {!data?.me.verified && (
         <div className="bg-red-500 p-3 text-center text-base text-white">
-          {" "}
           <span>Please verify Your Email</span>
         </div>
       )}
