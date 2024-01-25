@@ -1,7 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { RESTAURANT_FRAGMENT } from "../../fragments";
 import {
   SeeRestaurantQuery,
   SeeRestaurantQueryVariables,
@@ -13,16 +12,18 @@ const RESTAURANT_QUERY = gql`
       ok
       error
       restaurant {
-        ...RestaurantParts
+        id
+        name
+        coverImage
+        category {
+          name
+        }
+        address
+        isPromoted
       }
     }
   }
-  ${RESTAURANT_FRAGMENT}
 `;
-
-interface IRestaurantParams {
-  id: string;
-}
 
 export const Restaurant = () => {
   const params = useParams();
@@ -32,8 +33,28 @@ export const Restaurant = () => {
   >(RESTAURANT_QUERY, {
     variables: { input: { restaurantId: +params.id } },
   });
-  console.log(data);
-  return <h1>Restaurant</h1>;
+  return (
+    <div>
+      <div
+        className=" py-48 bg-center bg-cover"
+        style={{
+          backgroundImage: `url(${data?.seeRestaurant?.restaurant?.coverImage})`,
+        }}
+      >
+        <div className="bg-white w-3/12 py-8 pl-44">
+          <h4 className="text-4xl mb-4">
+            {data?.seeRestaurant.restaurant?.name}
+          </h4>
+          <h5 className="text-sm font-light mb-2 ">
+            {data?.seeRestaurant.restaurant?.category?.name}
+          </h5>
+          <h6 className="text-sm font-light">
+            {data?.seeRestaurant.restaurant?.address}
+          </h6>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 // useLocation은 어디에 있는지 url을 알게 해줌
