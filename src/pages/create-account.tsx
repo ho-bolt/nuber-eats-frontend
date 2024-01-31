@@ -92,7 +92,7 @@ export const CreateAccount = () => {
     <div className="h-screen flex items-center flex-col mt-10 lg:mt-28">
       <HelmetProvider>
         <Helmet>
-          <title>Create Account | Nuber </title>
+          <title>Create Account | Nuber</title>
         </Helmet>
       </HelmetProvider>
       <div className="w-full max-w-screen-sm flex flex-col px-5 items-center">

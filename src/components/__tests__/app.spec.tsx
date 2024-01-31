@@ -25,7 +25,6 @@ describe("<App/>", () => {
       isLoggedInVar(true);
     });
     getByText("Logged-in");
-    debug();
   });
 });
 

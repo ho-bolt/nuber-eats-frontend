@@ -23,7 +23,7 @@ interface IFormProps {
   password?: string;
 }
 
-export const EditProtile = () => {
+export const EditProfile = () => {
   const { data: userData } = useMe();
   const client = useApolloClient();
   const onCompleted = (data: EditProfileMutation) => {

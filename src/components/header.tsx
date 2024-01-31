@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 // 이 header에서 api로 가지 않고 캐시로 간다.
 export const Header: React.FC = () => {
   const { data } = useMe();
-
   return (
     <>
       {!data?.me.verified && (
@@ -18,7 +17,7 @@ export const Header: React.FC = () => {
         </div>
       )}
       <header className="py-4">
-        <div className="w-full px-5 xlg:px-0 max-w-screen-2xl mx-auto flex justify-between items-center">
+        <div className=" px-5 xlg:px-0 max-w-screen-2xl mx-auto flex justify-between items-center">
           <Link to="/">
             <img src={nuberLogo} className="w-36 " alt="Nuber Eats" />
           </Link>
