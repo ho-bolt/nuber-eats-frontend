@@ -3,8 +3,10 @@ import {
   ApolloClient,
   InMemoryCache,
   createHttpLink,
+  gql,
   makeVar,
 } from "@apollo/client";
+import { createFragmentRegistry } from "@apollo/client/cache";
 import { setContext } from "@apollo/client/link/context";
 const token = localStorage.getItem(LOCALSTORAGE_TOKEN);
 export const isLoggedInVar = makeVar(Boolean(token));
@@ -26,6 +28,19 @@ const authLink = setContext((_, { headers }) => {
 export const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache({
+    fragments: createFragmentRegistry(gql`
+      fragment RestaurantPartsFragment on Restaurant {
+        id
+        name
+        coverImage
+        category {
+          name
+        }
+        address
+        isPromoted
+      }
+    `),
+
     typePolicies: {
       Query: {
         fields: {
