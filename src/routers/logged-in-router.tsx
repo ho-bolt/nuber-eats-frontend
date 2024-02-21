@@ -16,6 +16,9 @@ import { AddRestaurant } from "../pages/owner/add-restaurants";
 import { MyRestaurant } from "../pages/owner/my-restaurant";
 import { RESTAURANT_FRAGMENT } from "../fragments";
 import { AddDish } from "../pages/owner/add-dish";
+import { Order } from "../pages/order";
+import { Dashboard } from "../pages/driver/dashboard";
+import { UserRole } from "../__generated__/graphql";
 
 const clientRoutes = [
   {
@@ -44,6 +47,10 @@ const commonRoutes = [
     path: "/edit-profile",
     component: <EditProfile />,
   },
+  {
+    path: "/orders/:id",
+    component: <Order />,
+  },
 ];
 
 const restaurantRoutes = [
@@ -62,6 +69,8 @@ const restaurantRoutes = [
   },
 ];
 
+const driverRoutes = [{ path: "/", component: <Dashboard /> }];
+
 export const LoggedInRouter = () => {
   const { data, loading, error } = useMe();
   // 여기서 처음 호출
@@ -76,25 +85,30 @@ export const LoggedInRouter = () => {
     <Router>
       <Header />
       <Switch>
-        {data.me.role === "Client" &&
+        //고객
+        {data.me.role === UserRole.Client &&
           clientRoutes.map((route) => (
             <Route key={route.path} exact path={route.path}>
               {route.component}
             </Route>
           ))}
-        {data.me.role === "Owner" &&
+        // 오너
+        {data.me.role === UserRole.Owner &&
           restaurantRoutes.map((route) => (
             <Route key={route.path} exact path={route.path}>
               {route.component}
             </Route>
           ))}
-
+        // 배달원
+        {data.me.role === UserRole.Delivery &&
+          driverRoutes.map((route) => (
+            <Route key={route.path}>{route.component}</Route>
+          ))}
         {commonRoutes.map((route) => (
           <Route key={route.path} exact path={route.path}>
             {route.component}
           </Route>
         ))}
-
         <Route>
           <NotFound />
         </Route>
