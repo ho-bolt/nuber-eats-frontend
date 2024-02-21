@@ -1,13 +1,26 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useSubscription } from "@apollo/client";
 import { useParams } from "react-router-dom";
-
+import {
+  VictoryAxis,
+  VictoryBar,
+  VictoryChart,
+  VictoryLabel,
+  VictoryLine,
+  VictoryPie,
+  VictoryTheme,
+  VictoryVoronoiContainer,
+  VictoryZoomContainer,
+} from "victory";
 import { Link } from "react-router-dom";
 
 import {
   MyRestaurantQuery,
   MyRestaurantQueryVariables,
+  PendingOrdersSubscription,
 } from "../../__generated__/graphql";
 import { Dish } from "../../components/dish";
+import { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 export const MY_RESTAURANT_QUERY = gql`
   query myRestaurant($input: MyRestaurantInput!) {
@@ -38,6 +51,30 @@ export const MY_RESTAURANT_QUERY = gql`
             }
           }
         }
+        orders {
+          id
+          createdAt
+          total
+        }
+      }
+    }
+  }
+`;
+
+const PENDING_ORDER_SUBSCRIPTION = gql`
+  subscription pendingOrders {
+    pendingOrders {
+      id
+      status
+      total
+      driver {
+        email
+      }
+      customer {
+        email
+      }
+      restaurant {
+        name
       }
     }
   }
@@ -55,7 +92,19 @@ export const MyRestaurant = () => {
       },
     }
   );
-  console.log(data);
+
+  const { data: subscriptionData } = useSubscription<PendingOrdersSubscription>(
+    PENDING_ORDER_SUBSCRIPTION
+  );
+  const history = useHistory();
+
+  useEffect(() => {
+    // 아이디가 있다는 건 주문이 들어왔다는 것
+    if (subscriptionData?.pendingOrders.id) {
+      history.push(`/orders/${subscriptionData.pendingOrders.id}`);
+    }
+  }, [subscriptionData]);
+
   return (
     <div>
       <div
@@ -87,18 +136,64 @@ export const MyRestaurant = () => {
             "Please Upload Dish "
           ) : (
             <div className="grid mt-16 md:grid-cols-3 gap-x-5 gap-y-10">
-              {data?.myRestaurant.restaurant?.menu.map((dish) => (
-                <Dish
-                  name={dish.name}
-                  description={dish.description}
-                  price={dish.price}
-                  photo={dish.photo}
-                />
-              ))}
+              {data?.myRestaurant.restaurant?.menu.map(
+                (dish: any, index: number) => (
+                  <Dish
+                    key={index}
+                    name={dish.name}
+                    description={dish.description}
+                    price={dish.price}
+                    photo={dish.photo}
+                    addItemToOrder={dish.id}
+                  />
+                )
+              )}
             </div>
           )}
+          <div className="mt-20 mb-10">
+            <h4 className="text-center text-2xl font-medium">Sales</h4>
+            <div className="   mx-auto">
+              <VictoryChart
+                theme={VictoryTheme.material}
+                width={window.innerWidth}
+                height={500}
+                domainPadding={50}
+                containerComponent={<VictoryZoomContainer />}
+              >
+                <VictoryLine
+                  labels={({ datum }: any) => `$${datum.y}`}
+                  labelComponent={
+                    <VictoryLabel
+                      style={{ fontSize: 15 }}
+                      renderInPortal
+                      dy={-20}
+                    />
+                  }
+                  data={data?.myRestaurant.restaurant?.orders?.map(
+                    (order: any) => ({
+                      x: order.createdAt,
+                      y: order.total,
+                    })
+                  )}
+                  interpolation="natural"
+                  style={{ data: { strokeWidth: 5 } }}
+                />
+                {/* <VictoryAxis
+                  style={{ tickLabels: { fontSize: 18 } as any }}
+                  dependentAxis
+                  tickFormat={(tick) => `$${tick}`}
+                /> */}
+                <VictoryAxis
+                  style={{ tickLabels: { fontSize: 18 } }}
+                  tickFormat={(tick) => new Date(tick).toLocaleDateString("ko")}
+                />
+              </VictoryChart>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 };
+
+//Victory 그래프는 감싸고 있는 상위 div에 크기 결정됨

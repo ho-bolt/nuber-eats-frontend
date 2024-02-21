@@ -33,6 +33,9 @@ module.exports = {
         forest: {
           100: "#467111",
         },
+        darkIndigo: {
+          100: "#1e2530",
+        },
       },
     },
   },

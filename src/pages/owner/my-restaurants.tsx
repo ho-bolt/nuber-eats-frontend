@@ -1,8 +1,5 @@
-import { gql, useApolloClient, useQuery } from "@apollo/client";
-import {
-  MyRestaurantDocument,
-  MyRestaurantsQuery,
-} from "../../__generated__/graphql";
+import { gql, useQuery } from "@apollo/client";
+import { MyRestaurantsQuery } from "../../__generated__/graphql";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { Restaurant } from "../../components/restaurant";

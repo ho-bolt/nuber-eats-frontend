@@ -9,7 +9,7 @@ import {
   CreateDishMutationVariables,
 } from "../../__generated__/graphql";
 import { useHistory } from "react-router-dom";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const CREATE_DISH_MUTATION = gql`
   mutation createDish($input: CreateDishInput!) {
